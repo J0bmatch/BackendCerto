@@ -1,6 +1,6 @@
-import { Controller, Post, Body, Get } from '@nestjs/common';
+/*import { Controller, Post, Body, Get } from '@nestjs/common';
 import { VagaService } from './vaga.service';
-import { Vaga } from './vaga.entity';
+import { Vaga } from '../vaga.entity';
 
 @Controller('vaga')
 export class VagaController {
@@ -36,3 +36,4 @@ export class VagaController {
     };
   }
 }
+*/

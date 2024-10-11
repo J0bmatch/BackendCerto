@@ -1,6 +1,6 @@
-import { Module } from '@nestjs/common';
+/*import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Vaga } from './vaga.entity';
+import { Vaga } from '../vaga.entity';
 import { VagaService } from './vaga.service';
 import { VagaController } from './vaga.controller';
 
@@ -9,4 +9,4 @@ import { VagaController } from './vaga.controller';
   providers: [VagaService],
   controllers: [VagaController],
 })
-export class VagaModule {}
+export class VagaModule {}*/

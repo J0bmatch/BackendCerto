@@ -1,8 +1,8 @@
-import { Module } from '@nestjs/common';
+/*import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Vaga } from '../../../../vaga.entity';
+import { Vaga } from '../vaga.entity';
 import { VagaService } from './gerencia.service';
-import { VagaController } from '../../../../vaga.controller';
+import { VagaController } from './gerencia.controller';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Vaga])],
@@ -10,3 +10,4 @@ import { VagaController } from '../../../../vaga.controller';
   controllers: [VagaController],
 })
 export class VagaModule {}
+*/

@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { CadastroEmpresa } from './cadastroempresa.entity';
-import { CadastroEmpresaService } from './cadastroempresa.service';
-import { CadastroEmpresaController } from './cadastroempresa.controller';
+import { Empresa } from '../empresa.entity';
+import { EmpresaService } from './cadastroempresa.service';
+import { EmpresaController } from './cadastroempresa.controller';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([CadastroEmpresa])],
-  providers: [CadastroEmpresaService],
-  controllers: [CadastroEmpresaController],
+  imports: [TypeOrmModule.forFeature([Empresa])],
+  providers: [EmpresaService],
+  controllers: [EmpresaController],
 })
 export class CadastroEmpresaModule {}

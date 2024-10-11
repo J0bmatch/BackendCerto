@@ -28,8 +28,9 @@ export class Candidato {
   @Column({ length: 15 })
   idiomas: string;
 
-  @Column({ length: 50 })
+ /* @Column({ length: 50 })
   bio: string;
+*/
 
   @Column({ length: 15 })
   fluencia: string;

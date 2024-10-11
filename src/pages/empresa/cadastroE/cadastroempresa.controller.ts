@@ -1,13 +1,13 @@
 import { Controller, Post, Body } from '@nestjs/common';
-import { CadastroEmpresaService } from './cadastroempresa.service';
-import { CadastroEmpresa } from './cadastroempresa.entity';
+import { EmpresaService } from './cadastroempresa.service';
+import { Empresa } from '../Empresa.entity'
 
 @Controller('cadastro-empresa')//postman ve
-export class CadastroEmpresaController {
-  constructor(private readonly cadastroEmpresaService: CadastroEmpresaService) {}
+export class EmpresaController {
+  constructor(private readonly EmpresaService: EmpresaService) {}
 
   @Post()
-  async create(@Body() createDto: CadastroEmpresa): Promise<CadastroEmpresa> {
-    return this.cadastroEmpresaService.create(createDto);
+  async create(@Body() createDto: Empresa): Promise<Empresa> {
+    return this.EmpresaService.create(createDto);
   }
 }

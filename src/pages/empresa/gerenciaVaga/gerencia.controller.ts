@@ -1,9 +1,9 @@
-import { Controller, Delete, Param, Get } from '@nestjs/common';
+/*import { Controller, Delete, Param, Get } from '@nestjs/common';
 import { VagaService } from '../vaga/vaga.service';
-import { Vaga } from './gerencia.entity';
+import { Vaga } from '../vaga.entity';
 
 @Controller('gerenciar-vaga')
-export class GerenciarVagaController {
+export class VagaController {
   constructor(private readonly vagaService: VagaService) {}
 
   //rota para listar vagas
@@ -18,3 +18,4 @@ export class GerenciarVagaController {
     return this.vagaService.deletarVaga(id);
   }
 }
+*/
