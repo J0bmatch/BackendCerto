@@ -1,7 +1,11 @@
+// src/candidato/login/loginC.service.ts
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Candidato } from '../candidato.entity';
+import { Candidato } from './candidato.entity';
+import { NotFoundException } from '@nestjs/common';
+import * as nodemailer from 'nodemailer'; 
+
 
 @Injectable()
 export class LoginCService {
@@ -10,18 +14,49 @@ export class LoginCService {
     private readonly candidatoRepository: Repository<Candidato>,
   ) {}
 
-  async login(rm: string, dataNascimento: string): Promise<{ isFirstAccess?: boolean; message?: string }> {
-    // Verifica se o candidato existe no banco de dados
-    const candidato = await this.candidatoRepository.findOne({ where: { rm, dataNascimento } });
-
-    // Se o candidato não existir, retorna uma mensagem
+  async validateLogin(CC_email: string, CC_cpf: string): Promise<{ candidato: Candidato; isFirstAccess: boolean }> {
+    const candidato = await this.candidatoRepository.findOne({
+      where: { CC_email, CC_cpf },
+    }); 
+  
     if (!candidato) {
-      return { message: 'Usuário não existe' }; // Mensagem para usuário não encontrado
+      throw new NotFoundException('Credenciais inválidas');
+    }
+  
+    const isFirstAccess = !candidato.experience; // Check if experience is empty or null
+    return { candidato, isFirstAccess };
+  }
+
+  // Novo método para enviar o código de verificação
+  async sendVerificationCode(email: string): Promise<{ code: string }> {
+    const candidato = await this.candidatoRepository.findOne({
+      where: { CC_email: email },
+    });
+
+    if (!candidato) {
+      throw new NotFoundException('E-mail não encontrado');
     }
 
-    // Se o candidato existir, verifica se a experiência está preenchida
-    const isFirstAccess = !candidato.experiencia; // Retorna true se a experiência for indefinida ou nula
+    // Gerar um código de 6 dígitos
+    const code = Math.floor(100000 + Math.random() * 900000).toString();
 
-    return { isFirstAccess }; // Retorna se é o primeiro acesso
+    // Enviar o código por e-mail usando nodemailer
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: 'kiadpmarins@gmail.com', // Coloque seu e-mail
+        pass: 'Ravina.1230', // Coloque sua senha
+      },
+    });
+
+    await transporter.sendMail({
+      from: 'kiadpmarins@gmail.com',
+      to: email,
+      subject: 'Seu código de verificação',
+      text: `Seu código de verificação é: ${code}`,
+    });
+
+    // Retornar o código para o front-end
+    return { code };
   }
 }

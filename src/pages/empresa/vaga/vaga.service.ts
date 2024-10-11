@@ -1,46 +1,42 @@
-/*import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Vaga } from '../vaga.entity';
-import { Vagas } from './interfaces/vaga.interface';  // Importa a interface
+import { Vaga } from './vaga.entity';
+import { PerfilCService } from 'src/pages/candidato/perfilC/perfilC.service';
+import { CadastroEmpresa } from '../cadastro/cadastroempresa.entity';
 
 @Injectable()
 export class VagaService {
-  private vaga: Vaga[];
-  private nextId=1;
+  private vaga: Vaga[] = [];
 
-  criarVaga(vaga: any){
+  async criarVaga(vaga: any){
     const novaVaga= {
       id: this.vaga.length +1,
-      descricao: vaga.VE_descricao || [],
-      exigencias: vaga.VE_exigencias || [],
       titulo: vaga.titulo,
+      VE_exigencias: vaga.VE_exigencias,
+      VE_descricao: vaga.VE_descricao,
       habilidadesInterpessoais: vaga.habilidadesInterpessoais ||[],
-      habilidadesCognitivas: vaga.habilidadesCognitivas || [],
       habilidadesPessoais: vaga.habilidadesPessoais ||[],
-    };
-
-    console.log('Adicionando vaga:', novaVaga); // Testando o conteúdo antes de adicionar
-    this.vaga.push(novaVaga);
-    console.log('Lista de vagas:', this.vaga);// Verificando o estado do array após a adição
-    return novaVaga;
-  }
-
-  listarVagas(){
-    return this.vaga
-  }
-
-  // Deletar uma vaga com base no ID
-  deletarVaga(id: number) {
-    const index = this.vaga.findIndex(vaga => vaga.id === id);
-    if (index !== -1) {
-      this.vaga.splice(index, 1);
-      return { message: 'Vaga deletada com sucesso!' };
-    } else {
-      return { message: 'Vaga não encontrada!' };
+      habilidadesCognitivas: vaga.habilidadesCognitivas || []
     }
   }
   
+  async deletarVaga(id: number): Promise<void> {
+    const result = await this.vagaRepository.delete(id); // Excluindo a vaga pelo ID
+
+    if (result.affected === 0) {
+      throw new NotFoundException(`Vaga com ID ${id} não foi encontrada`);
+    }
+  }
+
+  async obterTodas(): Promise<Vaga[]> {
+    return await this.vagaRepository.find(); // Busca todas as vagas no banco de dados
+  }
+
+  listarCandidatosPorVaga(vagaId: string) {
+    const vaga = this.vaga.find(v => v.VE_id === Number(vagaId));
+    return vaga;
+  }
   constructor(
     @InjectRepository(Vaga)
     private vagaRepository: Repository<Vaga>,
@@ -48,14 +44,27 @@ export class VagaService {
 
   async create(descricao: string, exigencias: string): Promise<Vaga> {
     const vaga = this.vagaRepository.create({
-      descricao: descricao,
-      exigencias: exigencias,
+      VE_descricao: descricao,
+      VE_exigencias: exigencias,
     });
     return this.vagaRepository.save(vaga);
   }
     async findAll(): Promise<Vaga[]> {
       return this.vaga; // Retorna a lista de vagas
     }
+  async listarVagaPorEmpresa(id:number): Promise<Vaga[]>{
+    return this.vagaRepository.find({
+      where: {
+       //CE_id: {CE_id},
+       }});
   }
+  getVagaById(id: number): Vaga {
+    const vaga = this.vaga.find(vaga => vaga.VE_id === id);
 
-*/
+    if (!vaga) {
+      throw new NotFoundException(`Vaga com ID ${id} não encontrada.`);
+    }
+
+    return vaga;
+  }
+}

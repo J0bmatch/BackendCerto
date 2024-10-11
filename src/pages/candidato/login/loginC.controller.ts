@@ -1,12 +1,18 @@
-import { Controller, Post, Body } from '@nestjs/common';
+// src/loginC/loginC.controller.ts
+import { Controller, Get, Post, Query, Body } from '@nestjs/common';
 import { LoginCService } from './loginC.service';
 
-@Controller('candidato/login')
+@Controller('loginC')
 export class LoginCController {
-  constructor(private readonly candidatoService: LoginCService) {}
+  constructor(private readonly loginCService: LoginCService) {}
 
-  @Post()
-  async login(@Body() credentials: { rm: string; dataNascimento: string }): Promise<{ isFirstAccess?: boolean; message?: string }> {
-    return this.candidatoService.login(credentials.rm, credentials.dataNascimento);
+  @Get()
+  async login(@Query('CC_email') CC_email: string, @Query('CC_cpf') CC_cpf: string) {
+    return this.loginCService.validateLogin(CC_email, CC_cpf);
+  }
+
+  @Post('send-verification')
+  async sendVerificationCode(@Body('CC_email') email: string) {
+    return this.loginCService.sendVerificationCode(email);  
   }
 }
