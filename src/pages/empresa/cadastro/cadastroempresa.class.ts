@@ -1,5 +1,4 @@
 import { CadastroEmpresa } from './cadastroempresa.interface';
-import { Address } from 'cluster';
 export interface Address {
     rua: string;
     numero: string;
@@ -17,7 +16,7 @@ export class CadastroEmpresaClass implements CadastroEmpresa {
   CE_descricao: string;
   CE_rendamensal: number;
   EmpresaCandidato_EC_id: number;
-  EmpresaEndereco_EE_cep: Address;  // Usando string para o CEP
+  EmpresaEndereco_EE_cep: string;  
   segmentoAtuacao_SA_id: number;
 
   constructor(
@@ -29,7 +28,7 @@ export class CadastroEmpresaClass implements CadastroEmpresa {
     descricao: string,
     rendamensal: number,
     EC_id: number,
-    cep: Address,  // Usando string para o CEP
+    cep: string,  // Usando string para o CEP
     SA_id: number
   ) {
     this.CE_cnpj = cnpj;

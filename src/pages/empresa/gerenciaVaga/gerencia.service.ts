@@ -1,7 +1,7 @@
-/*import { Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Vaga } from '../vaga.entity';
+import { Vaga } from '../vaga/vaga.entity';
 
 @Injectable()
 export class VagaService {
@@ -13,8 +13,8 @@ export class VagaService {
 
   async create(descricao: string, exigencias: string): Promise<Vaga> {
     const vaga = this.vagaRepository.create({
-      descricao: descricao,
-      exigencias: exigencias,
+      VE_descricao: descricao,
+      VE_exigencias: exigencias,
     });
     return this.vagaRepository.save(vaga);
   }
@@ -22,4 +22,4 @@ export class VagaService {
       return this.vaga; // Retorna a lista de vagas
     }
   }
-*/
+

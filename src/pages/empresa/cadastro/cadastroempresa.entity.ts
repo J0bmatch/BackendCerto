@@ -28,7 +28,7 @@ export class CadastroEmpresa {
   EmpresaCandidato_EC_id: number;
 
   @Column()
-  EmpresaEndereco_EE_cep: Address;
+  EmpresaEndereco_EE_cep: string;
 
   @Column()
   segmentoAtuacao_SA_id: number;

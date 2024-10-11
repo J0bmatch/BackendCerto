@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
-@Entity('perfilempresateste')
+@Entity('empresa') //nome da tabela no bd
 export class PerfilEmp {
   @PrimaryGeneratedColumn()
   id: number;
@@ -11,8 +11,8 @@ export class PerfilEmp {
   @Column('longtext')
   SA_descricao: string;
   
-  @Column(type => Address)
-  EmpresaEndereco_EE_cep: address;
+  @Column('longtext')
+  EmpresaEndereco_EE_cep: string;
 
   @Column('longtext')
   CE_rendamensal: number;
