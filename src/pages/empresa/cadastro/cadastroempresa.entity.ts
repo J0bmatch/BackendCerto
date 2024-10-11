@@ -4,13 +4,10 @@ import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 @Entity('cadastroempresateste') //taela do bd
 export class CadastroEmpresa {
   @PrimaryGeneratedColumn()
-  CE_id: number;
+  CE_cnpj: number;
 
   @Column({ length: 60 })
   CE_nomeempresa: string;
-
-  @Column({ length: 14 })
-  CE_cnpj: string;
 
   @Column({ length: 15 })
   CE_telefone: string;
@@ -35,5 +32,6 @@ export class CadastroEmpresa {
 
   @Column()
   segmentoAtuacao_SA_id: number;
+
 
 }

@@ -1,26 +1,22 @@
-import { Address } from 'cluster';
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
-@Entity('perfilempresatext')
-export class Perfilem {
+@Entity('perfilempresateste')
+export class PerfilEmp {
   @PrimaryGeneratedColumn()
-  PE_id: number;
+  id: number;
 
   @Column('longtext')
   CE_nomeempresa: string;
 
   @Column('longtext')
   SA_descricao: string;
+  
+  @Column(type => Address)
+  EmpresaEndereco_EE_cep: address;
 
-  @Column('buffer')
-  CE_fotoperfil: Buffer;
-
-  @Column('Address')
-  EmpresaEndereco_EE_cep: Address;
-
-  @Column('number')
+  @Column('longtext')
   CE_rendamensal: number;
 
-  @Column('text')
+  @Column('longtext')
   EmpresaCandidato_EC_id: number;
 }

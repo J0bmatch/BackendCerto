@@ -5,16 +5,13 @@ import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 @Entity('candidatos_test')
 export class Candidato {
   @PrimaryGeneratedColumn()
-  id: number;
+  CC_cpf: number;
 
   @Column()
   CC_email: string;
 
   @Column()
-  CC_cpf: string;
-
-  @Column()
-  experience: string; 
+  CC_experience: string; 
 } /*@Entity('cadastroCandidato')
 export class Candidato {
   @PrimaryGeneratedColumn()

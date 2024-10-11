@@ -7,8 +7,8 @@ export class VagaController {
   constructor(private readonly vagaService: VagaService) {}
 
   @Get(':id/candidatos')
-  listarCandidatos(@Param('id') id: string, @Res() res) {
-    const candidatos = this.vagaService.listarCandidatosPorVaga(id);
+  async listarCandidatos(@Param('id') id: string, @Res() res) {
+    const candidatos = await this.vagaService.listarCandidatosPorVaga(id);
     return res.json(candidatos);
   }
 
@@ -18,34 +18,29 @@ export class VagaController {
   }
 
   @Post()
-  async criarVaga(@Body() body: any) {
-    const { titulo, habilidadesInterpessoais,habilidadesCognitivas, habilidadesPessoais,VE_descricao, VE_exigencias} = body;
-
-    return this.vagaService.criarVaga({
-      titulo,
-      VE_descricao, 
-      VE_exigencias,
-      habilidadesInterpessoais: habilidadesInterpessoais || [],
-      habilidadesCognitivas: habilidadesCognitivas || [],
-      habilidadesPessoais: habilidadesPessoais || [],
-    }); // Certifique-se de que o método create espera esses parâmetros
+  async criarVaga(@Body() body: any, @Res() res) {
+    const vagaCriada = await this.vagaService.criarVaga(body);
+    return res.status(HttpStatus.CREATED).json(vagaCriada);
   }
 
   @Get()
-  findAll() {
-    return this.vagaService.findAll();
+  async findAll(@Res() res) {
+    const vagas = await this.vagaService.obterTodas();
+    return res.status(HttpStatus.OK).json(vagas);
   }
 
   @Get('CadastroEmpresa/:CE_id')
-  listarVagaPorEmpresa(@Param('CE_id')CE_id: number){
-    return this.vagaService.listarVagaPorEmpresa(CE_id);
+  async listarVagaPorEmpresa(@Param('CE_id') CE_id: number, @Res() res) {
+    const vagas = await this.vagaService.listarVagaPorEmpresa(CE_id);
+    return res.status(HttpStatus.OK).json(vagas);
   }
-  // Navegação para os requisitos de uma vaga específica
+
   @Get('/requisitos')
-  navigateToRequisitos() {
-    return {
+  navigateToRequisitos(@Res() res) {
+    return res.status(HttpStatus.OK).json({
       message: 'Navegando para requisitos',
       nextRoute: '/requisitos',
-    };
+    });
   }
 }
+

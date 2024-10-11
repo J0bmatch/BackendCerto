@@ -1,16 +1,12 @@
-/*import { Controller, Post, Body } from '@nestjs/common';
-import { PerfilE } from './perfilE.interface';
-import { Perfilem } from './perfilE.entity';
-import { CadastroEmpresa } from '../cadastro/cadastroempresa.entity';
-import { CadastroEmpresaService } from '../cadastro/cadastroempresa.service';
-import { PerfilEService } from './perfilE.service';
+import {Controller, Get, Param} from '@nestjs/common';
+import {PerfilEService} from './perfilE.service';
 
-@Controller('perfil-empresa')//postman ve
-export class PerfilEController {
-  constructor(private readonly PerfilEservice: PerfilEService) {}
+@Controller('perfilE')
+export class PerfilEController{
+    constructor(private readonly perfiEService: PerfilEService){}
 
-  @Post()
-  async create(@Body() createDto: PerfilE): Promise<Perfil> {
-    return this.cadastroEmpresaService.create(createDto);
-  }
-}*/
+    @Get(':id')
+    async obterPerfil(@Param('id') id:number){
+        return await this.perfiEService.obterPerfilEmpresa(id);
+    }
+}

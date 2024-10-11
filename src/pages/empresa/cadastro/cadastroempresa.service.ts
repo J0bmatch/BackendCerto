@@ -14,4 +14,14 @@ export class CadastroEmpresaService {
     const cadastroEmpresa = this.cadastroEmpresaRepository.create(data);
     return this.cadastroEmpresaRepository.save(cadastroEmpresa);
   }
-}
+  // Método para buscar um cadastro de empresa por ID
+  async obterCadastroPorId(id: number): Promise<CadastroEmpresaService> {
+    const cadastro = await this.cadastroEmpresaRepository.findOne({
+      where: { CE_cnpj: id },
+    });
+    if (!cadastro) {
+      throw new Error(`Cadastro de empresa com o ID ${id} não encontrado.`);
+    }
+
+    return cadastro;
+}}

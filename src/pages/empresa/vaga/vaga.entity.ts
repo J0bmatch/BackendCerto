@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
 import { PerfilE } from '../perfilE/perfilE.interface';
-//import { PerfilEService } from '../perfilE/perfilE.service';
+import { PerfilEService } from '../perfilE/perfilE.service';
 import { Perfilem } from '../perfilE/perfilE.entity';
 
 @Entity('vagaempresateste')

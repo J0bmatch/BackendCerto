@@ -3,7 +3,7 @@ export interface PerfilE {
     CE_nomeempresa: string;
     SA_descricao: string;
     CE_fotoperfil: Buffer;
-    EmpresaEndereco_EE_cep: string;
+    EmpresaEndereco_EE_cep: address;
     CE_rendamensal: number;
     EmpresaCandidato_EC_id: number;
   }
