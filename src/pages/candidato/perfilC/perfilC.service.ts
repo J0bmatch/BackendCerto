@@ -26,8 +26,8 @@ export class PerfilCService {
 
     // Retorna o perfil do candidato baseado nas informações da vaga
     return {
-      id: vaga.id, 
-      nome: vaga.nome || 'titulo não informado',
+      id: vaga.VE_id, 
+      nome: vaga.titulo || 'titulo não informado',
     };
   }
 }

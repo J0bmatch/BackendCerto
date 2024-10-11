@@ -21,7 +21,5 @@ export class CadastroEmpresaService {
     });
     if (!cadastro) {
       throw new Error(`Cadastro de empresa com o ID ${id} não encontrado.`);
-    }
-
-    return cadastro;
+    }    return cadastro;
 }}

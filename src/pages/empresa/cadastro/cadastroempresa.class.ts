@@ -16,7 +16,7 @@ export class CadastroEmpresaClass implements CadastroEmpresa {
   CE_descricao: string;
   CE_rendamensal: number;
   EmpresaCandidato_EC_id: number;
-  EmpresaEndereco_EE_cep: string;  
+  EmpresaEndereco_EE_cep: string;  // Usando string para o CEP
   segmentoAtuacao_SA_id: number;
 
   constructor(

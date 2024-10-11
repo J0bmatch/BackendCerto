@@ -1,9 +1,10 @@
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Address } from 'cluster';
 
-@Entity('empresa') //nome da tabela no bd
+@Entity('perfilempresateste')
 export class PerfilEmp {
   @PrimaryGeneratedColumn()
-  id: number;
+  PE_id: number;
 
   @Column('longtext')
   CE_nomeempresa: string;

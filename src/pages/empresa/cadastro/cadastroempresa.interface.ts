@@ -8,7 +8,7 @@ export interface CadastroEmpresa {
     CE_descricao: string;
     CE_rendamensal: number;
     EmpresaCandidato_EC_id: number;
-    EmpresaEndereco_EE_cep: Address;
+    EmpresaEndereco_EE_cep: string;
     segmentoAtuacao_SA_id: number;
   }
   

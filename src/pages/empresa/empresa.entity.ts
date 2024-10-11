@@ -5,10 +5,7 @@ import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 @Entity()
 export class Empresa {
   @PrimaryGeneratedColumn()
-  id: number;
-
-  @Column()
-  cnpj: string;
+  cnpj: number;
 
   @Column()
   telefone: string;

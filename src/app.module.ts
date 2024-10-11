@@ -1,4 +1,3 @@
-import { GerenciarVagaController } from './pages/empresa/gerenciavaga/gerencia.controller';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
@@ -16,7 +15,7 @@ import { LoginCModule } from './pages/candidato/login/loginC.module';
       host: 'localhost',
       port: 3306, 
       username: 'root',
-      password: '',
+      password: 'aluno',
       database: 'jobmatch',
       entities: [__dirname + '/**/*.entity{.ts,.js}'], 
       synchronize: true, 

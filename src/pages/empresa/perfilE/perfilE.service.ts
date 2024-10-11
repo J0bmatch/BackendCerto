@@ -21,13 +21,13 @@ export class PerfilEService {
 
     const perfilEmpresa: PerfilE = {
       PE_id: id,
-      CE_nomeempresa: cadastroempresa.CE_nomeempresa,
-      SA_descricao: cadastroempresa.SA_descricao,
-      CE_fotoperfil: cadastroempresa.CE_fotoperfil,
-      EmpresaEndereco_EE_cep: cadastroempresa.EmpresaEndereco_EE_cep,
-      CE_rendamensal: cadastroempresa.CE_rendamensal,
-      EmpresaCandidato_EC_id: cadastroempresa.EmpresaCandidato_EC_id,
-    };
+      CE_nomeempresa: cadastroempresa.CE_nomeempresa, // Verifique se é string
+      SA_descricao: cadastroempresa.SA_descricao, // Verifique se é string
+      CE_fotoperfil: cadastroempresa.CE_fotoperfil || '', // Atribua um valor padrão se for opcional
+      EmpresaEndereco_EE_cep: cadastroempresa.EmpresaEndereco_EE_cep, // Verifique se é string
+      CE_rendamensal: cadastroempresa.CE_rendamensal, // Verifique se é number
+      EmpresaCandidato_EC_id: cadastroempresa.EmpresaCandidato_EC_id, // Verifique se é number
+  };
 
     return perfilEmpresa;
   }

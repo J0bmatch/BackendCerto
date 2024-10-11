@@ -2,7 +2,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Candidato } from '../candidato.entity';
+import { Candidato } from './candidato.entity';
 import { NotFoundException } from '@nestjs/common';
 import * as nodemailer from 'nodemailer'; 
 
@@ -14,23 +14,23 @@ export class LoginCService {
     private readonly candidatoRepository: Repository<Candidato>,
   ) {}
 
-  async validateLogin(email: string, cpf: string): Promise<{ candidato: Candidato; isFirstAccess: boolean }> {
+  async validateLogin(CC_email: string, CC_cpf: string): Promise<{ candidato: Candidato; isFirstAccess: boolean }> {
     const candidato = await this.candidatoRepository.findOne({
-      where: { email, cpf },
+      where: { CC_email, CC_cpf },
     }); 
   
     if (!candidato) {
       throw new NotFoundException('Credenciais inválidas');
     }
   
-    const isFirstAccess = !candidato.experiencia; // Check if experience is empty or null
+    const isFirstAccess = !candidato.experience; // Check if experience is empty or null
     return { candidato, isFirstAccess };
   }
 
   // Novo método para enviar o código de verificação
   async sendVerificationCode(email: string): Promise<{ code: string }> {
     const candidato = await this.candidatoRepository.findOne({
-      where: { email: email },
+      where: { CC_email: email },
     });
 
     if (!candidato) {
