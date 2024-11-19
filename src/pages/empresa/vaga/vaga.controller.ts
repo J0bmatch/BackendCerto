@@ -1,46 +1,37 @@
-import { Controller, Post, Body, Get, Res, Param, HttpStatus } from '@nestjs/common';
+import { Controller, Get, Post, Delete, Param, Body } from '@nestjs/common';
 import { VagaService } from './vaga.service';
-import { Vaga } from './vaga.entity';
+import { Vaga } from '../vaga.entity';
+import { ConfirmMatch } from '../../ambos/matching.entity';
 
-@Controller('vaga')
+
+@Controller('vagas')
 export class VagaController {
-  constructor(private readonly vagaService: VagaService) {}
+  constructor(private readonly vagaService: VagaService,
+  ) {}
 
-  @Get(':id/candidatos')
-  async listarCandidatos(@Param('id') id: string, @Res() res) {
-    const candidatos = await this.vagaService.listarCandidatosPorVaga(id);
-    return res.json(candidatos);
+  @Get(':empresa_id')
+  async getVagasByEmpresa(@Param('empresa_id') empresa_id: number): Promise<Vaga[]> {
+    return this.vagaService.findByEmpresaId(empresa_id);
+  }
+  
+  @Get('vaga/:id')
+  async getVagaById(@Param('id') id: number): Promise<Vaga> {
+    return this.vagaService.findById(id);
   }
 
-  @Get('perfil/:id')
-  verPerfil(@Param('id') id: string, @Res() res) {
-    return res.redirect(`/cadastro/perfilC/${id}`);
+  @Get('vaga/:vagaId/candidatos')
+  async getAllCandidatesByVaga(@Param('vagaId') vagaId: number): Promise<ConfirmMatch[]> {
+    return this.vagaService.findAllCandidatesByVaga(vagaId); 
   }
+  
 
   @Post()
-  async criarVaga(@Body() body: any, @Res() res) {
-    const vagaCriada = await this.vagaService.criarVaga(body);
-    return res.status(HttpStatus.CREATED).json(vagaCriada);
+  async createVaga(@Body() vagaData: Partial<Vaga>): Promise<Vaga> {
+    return this.vagaService.createVaga(vagaData);
   }
 
-  @Get()
-  async findAll(@Res() res) {
-    const vagas = await this.vagaService.obterTodas();
-    return res.status(HttpStatus.OK).json(vagas);
-  }
-
-  @Get('CadastroEmpresa/:CE_id')
-  async listarVagaPorEmpresa(@Param('CE_id') CE_id: number, @Res() res) {
-    const vagas = await this.vagaService.listarVagaPorEmpresa(CE_id);
-    return res.status(HttpStatus.OK).json(vagas);
-  }
-
-  @Get('/requisitos')
-  navigateToRequisitos(@Res() res) {
-    return res.status(HttpStatus.OK).json({
-      message: 'Navegando para requisitos',
-      nextRoute: '/requisitos',
-    });
+  @Delete(':id')
+  async deleteVaga(@Param('id') id: number): Promise<void> {
+    return this.vagaService.deleteVaga(id);
   }
 }
-

@@ -1,17 +1,13 @@
-// src/loginC/candidato.entity.ts
-
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
-/* as chaves primarias e @manyTo algo, tem problema pq falta
- fazer as importacoes das entitys de outras tabelas*/
-
+import { Habilidades, Interesses, Endereco } from '../ambos/compartilhado.entity';
+import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn, OneToMany, JoinTable, ManyToMany } from 'typeorm';
 
 @Entity('candidato')
 export class Candidato {
+  getAllCandidatos() {
+    throw new Error('Method not implemented.');
+  }
   @PrimaryGeneratedColumn()
   id: number;
-
-  @Column({ length: 11 })
-  cpf: string;
 
   @Column({ length: 50 })
   nome: string;
@@ -19,30 +15,41 @@ export class Candidato {
   @Column({ length: 30 })
   email: string;
 
-  @Column({ type: 'integer', width: 3 })
-  idade: number;
-
-  @Column({ length: 11 })
+  @Column({ length: 15 })
   telefone: string;
 
   @Column({ length: 15 })
   idiomas: string;
 
- /* @Column({ length: 50 })
+  @Column({ length: 50 })
   bio: string;
-*/
 
   @Column({ length: 15 })
   fluencia: string;
 
   @Column({ nullable: true })
   experiencia: string;
+  
+  @Column({ length: 9 })
+  cep: string;
 
-  @Column({ length: 18 })
-  senha: string;
+  @Column({ length: 20 })
+  rua: string;
 
-  @Column({ length: 18 })
-  sexo: string;
+  @Column({ length: 20 })
+  bairro: string;
+
+  @Column({ length: 20 })
+  cidade: string;
+
+  @Column({ length: 2 })
+  estado: string;
+
+  @Column({ length: 20 })
+  curso: string;
+
+  @Column({ length: 50 })
+  instituicao: string;
 
   @Column({ length: 50 })
   nomesocial: string;
@@ -50,10 +57,11 @@ export class Candidato {
   @Column({ length: 4 })
   numero: string;
 
-  @Column({ length: 50 })
+  @Column({ length: 11 })
   dataNascimento: string;
 
-  @Column({ length: 50 })
+
+  @Column({ length: 5 })
   rm: string;
 
   @Column({ length: 50 })
@@ -64,22 +72,18 @@ export class Candidato {
 
   @Column({ length: 50 })
   adaptacaodeficiencia: string;
-/*
-  @OneToOne(() => FormacaoAcademica)
-  @JoinColumn({ name: 'formacaoacademica_id' })
-  formacaoacademica: FormacaoAcademica;
+
+  @ManyToMany(() => Interesses)
+  @JoinTable({ name: 'candidato_interesses' })
+  interesses: Interesses[];
+
+  @ManyToMany(() => Habilidades)
+  @JoinTable({ name: 'candidato_habilidades' }) // Nome da tabela de junção
+  habilidades: Habilidades[];
 
   @OneToOne(() => Endereco)
-  @JoinColumn({ name: 'endereco_id' })
-  endereco: Endereco;
+@JoinColumn({ name: 'endereco_id' }) // A coluna que vai armazenar o ID do endereço
+endereco: Endereco;
 
-  @OneToOne(() => Interesses)
-  @JoinColumn({ name: 'interesses_id' })
-  interesses: Interesses;
-
-  @OneToOne(() => Habilidades)
-  @JoinColumn({ name: 'habilidades_id' })
-  habilidades: Habilidades;
-
-  */
+  
 }

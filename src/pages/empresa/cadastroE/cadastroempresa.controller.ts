@@ -2,7 +2,7 @@ import { Controller, Post, Body } from '@nestjs/common';
 import { EmpresaService } from './cadastroempresa.service';
 import { Empresa } from '../Empresa.entity'
 
-@Controller('cadastro-empresa')//postman ve
+@Controller('cadastro-empresa')
 export class EmpresaController {
   constructor(private readonly EmpresaService: EmpresaService) {}
 

@@ -1,72 +1,93 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Vaga } from './vaga.entity';
+import { Vaga } from '../vaga.entity';
+import { Habilidades, Interesses } from 'src/pages/ambos/compartilhado.entity';
+import { ConfirmMatch } from '../../ambos/matching.entity'
 
 @Injectable()
 export class VagaService {
   constructor(
     @InjectRepository(Vaga)
-    private readonly vagaRepository: Repository<Vaga>, // Repositório de Vagas
+    private vagaRepository: Repository<Vaga>,
+
+    @InjectRepository(Habilidades)  // Injeção do repositório de Habilidades
+    private readonly habilidadesRepository: Repository<Habilidades>,
+
+    @InjectRepository(Interesses)  // Injeção do repositório de Habilidades
+    private readonly interessesRepository: Repository<Interesses>,
+
+    @InjectRepository(ConfirmMatch)  // Injeção do repositório de Habilidades
+    private readonly confirmMatchRepository: Repository<ConfirmMatch>,
   ) {}
 
-  // Método para criar uma vaga
-  async criarVaga(vagaData: any): Promise<Vaga> {
-    const vaga = this.vagaRepository.create({
-      titulo: vagaData.titulo,
-      VE_exigencias: vagaData.VE_exigencias,
-      VE_descricao: vagaData.VE_descricao,
-      habilidadesInterpessoais: vagaData.habilidadesInterpessoais || [],
-      habilidadesPessoais: vagaData.habilidadesPessoais || [],
-      habilidadesCognitivas: vagaData.habilidadesCognitivas || []
-    });
-
-    // Salva a vaga no banco de dados
-    return await this.vagaRepository.save(vaga);
-  }
-
-  // Método para deletar uma vaga pelo ID
-  async deletarVaga(id: number): Promise<void> {
-    const result = await this.vagaRepository.delete(id);
-
-    if (result.affected === 0) {
-      throw new NotFoundException(`Vaga com ID ${id} não foi encontrada`);
-    }
-  }
-
-  // Método para obter todas as vagas
-  async obterTodas(): Promise<Vaga[]> {
-    return await this.vagaRepository.find();
-  }
-
-  // Método para listar vagas de uma empresa específica
-  async listarVagaPorEmpresa(CE_id: number): Promise<Vaga[]> {
-    return await this.vagaRepository.find({
-      where: { CE_id }, // Filtra por CE_id (id da empresa)
+  async findByEmpresaId(empresaId: number): Promise<Vaga[]> {
+    return this.vagaRepository.find({
+      where: { empresa: { id: empresaId } }, // Usamos o relacionamento com Empresa
+      relations: ['empresa', 'habilidades', 'interesses'], // Carrega as relações associadas
     });
   }
 
-  // Método para listar candidatos por vaga
-  async listarCandidatosPorVaga(vagaId: string): Promise<Vaga> {
+   // Método para buscar vaga por ID
+   async findById(id: number): Promise<Vaga> {
     const vaga = await this.vagaRepository.findOne({
-      where: { VE_id: Number(vagaId) },
+      where: { id },
+      relations: ['empresa', 'habilidades', 'interesses'], // Relacionamentos necessários
     });
 
     if (!vaga) {
-      throw new NotFoundException(`Vaga com ID ${vagaId} não foi encontrada.`);
+      throw new NotFoundException('Vaga não encontrada.');
     }
 
     return vaga;
   }
 
-  // Método para buscar uma vaga por ID
-  async getVagaById(id: number): Promise<Vaga> {
-    const vaga = await this.vagaRepository.findOne({ where: { VE_id: id } });
+  async createVaga(vagaData: Partial<Vaga>): Promise<Vaga> {
+    // Verifica se o campo empresa e empresa.id estão presentes
+    if (!vagaData.empresa || !vagaData.empresa.id) {
+      throw new Error("O campo 'empresa' com um ID válido é obrigatório.");
+    }
+    if (vagaData.habilidades) {
+      const habilidades = await this.habilidadesRepository.findByIds(vagaData.habilidades);
+      vagaData.habilidades = habilidades;
+    }
+  
+    // Atualizando interesses
+    if (vagaData.interesses) {
+      const interesses = await this.interessesRepository.findByIds(vagaData.interesses);
+      vagaData.interesses = interesses;
+    }
+    const novaVaga = this.vagaRepository.create({
+      descricao: vagaData.descricao,
+      exigencias: vagaData.exigencias,
+      funcao: vagaData.funcao,
+      salario: vagaData.salario,
+      riscos: vagaData.riscos,
+      googleForm: vagaData.googleForm,
+      empresa: { id: vagaData.empresa.id },
+      habilidades: vagaData.habilidades,
+      interesses: vagaData.interesses
+    });
+    
+    return this.vagaRepository.save(novaVaga);
+  }
+  
+  
 
+  async deleteVaga(id: number): Promise<void> {
+    const vaga = await this.vagaRepository.findOne({ where: { id } });
     if (!vaga) {
-      throw new NotFoundException(`Vaga com ID ${id} não foi encontrada.`);
+      throw new NotFoundException('Vaga não encontrada.');
     }
-
-    return vaga;
+    await this.vagaRepository.remove(vaga);
   }
+
+//jkjkjkjkj
+async findAllCandidatesByVaga(vagaId: number): Promise<ConfirmMatch[]> {
+  return this.confirmMatchRepository.find({
+    where: { vaga: { id: vagaId } },
+    relations: ['candidato'], 
+  });
 }
+
+  }

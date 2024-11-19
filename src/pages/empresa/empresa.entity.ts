@@ -1,17 +1,40 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
-//import { Endereco } from './endereco.entity'; // Importação da entidade Endereco
-//import { SegmentoAtuacao } from './segmentoatuacao.entity'; // Importação da entidade SegmentoAtuacao
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn } from 'typeorm';
+import { SegmentoAtuacao } from './segmentoAtuacao.entity'; // Importação da entidade SegmentoAtuacao
 
 @Entity()
 export class Empresa {
   @PrimaryGeneratedColumn()
-  cnpj: number;
+  id: number;
+
+  @Column()
+  cnpj: string;
 
   @Column()
   telefone: string;
 
   @Column()
   email: string;
+
+  @Column({ length: 30 })
+  segatuacao: string;
+
+  @Column({ length: 9 })
+  cep: string;
+
+  @Column({ length: 50 })
+  rua: string;
+
+  @Column({ length: 50 })
+  bairro: string;
+
+  @Column({ length: 50 })
+  cidade: string;
+
+  @Column({ length: 50 })
+  estado: string;
+
+  @Column({ length: 50 })
+  pais: string;
 
   @Column()
   fotoperfil: string;
@@ -34,13 +57,8 @@ export class Empresa {
   @Column('text')
   descricao: string;
 
-  /*
-  @ManyToOne(() => Endereco, { eager: true }) // Relação Many-To-One com Endereco
-  @JoinColumn({ name: 'endereco_id' })
-  endereco: Endereco;
-
-  @ManyToOne(() => SegmentoAtuacao, { eager: true }) // Relação Many-To-One com SegmentoAtuacao
+  @ManyToOne(() => SegmentoAtuacao, { eager: true }) 
   @JoinColumn({ name: 'segmentoatuacao_id' })
   segmentoAtuacao: SegmentoAtuacao;
-  */
+
 }

@@ -1,9 +1,9 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn } from 'typeorm';
-//import { Habilidades } from './habilidades.entity'; // Importação da entidade Habilidades
-//import { Interesses } from './interesses.entity'; // Importação da entidade Interesses
-//import { Empresa } from './empresa.entity'; // Importação da entidade Empresa
+import { Entity, Column, ManyToOne, JoinColumn, PrimaryGeneratedColumn, ManyToMany, JoinTable } from 'typeorm';
+import { Habilidades } from '../ambos/compartilhado.entity';
+import { Interesses } from '../ambos/compartilhado.entity';
+import { Empresa } from './empresa.entity';
 
-@Entity()
+@Entity('vaga')
 export class Vaga {
   @PrimaryGeneratedColumn()
   id: number;
@@ -14,7 +14,7 @@ export class Vaga {
   @Column('text')
   exigencias: string;
 
-  @Column()
+  @Column({ length: 500 })
   funcao: string;
 
   @Column('float', { precision: 5 })
@@ -23,19 +23,26 @@ export class Vaga {
   @Column('text')
   riscos: string;
 
-  @Column()
+  @Column('text')
   googleForm: string;
-/*
-  @ManyToOne(() => Habilidades, { eager: true }) // Relação Many-To-One com Habilidades
-  @JoinColumn({ name: 'habilidades_id' })
-  habilidades: Habilidades;
 
-  @ManyToOne(() => Interesses, { eager: true }) // Relação Many-To-One com Interesses
-  @JoinColumn({ name: 'interesses_id' })
-  interesses: Interesses;
+  @ManyToMany(() => Habilidades, { eager: true })
+  @JoinTable({
+    name: 'vaga_habilidades', // Nome da tabela de junção
+    joinColumn: { name: 'vaga_id', referencedColumnName: 'id' },
+    inverseJoinColumn: { name: 'habilidades_id', referencedColumnName: 'id' },
+  })
+  habilidades: Habilidades[];
 
-  @ManyToOne(() => Empresa, { eager: true }) // Relação Many-To-One com Empresa
+  @ManyToMany(() => Interesses, { eager: true })
+  @JoinTable({
+    name: 'vaga_interesses', // Nome da tabela de junção
+    joinColumn: { name: 'vaga_id', referencedColumnName: 'id' },
+    inverseJoinColumn: { name: 'interesses_id', referencedColumnName: 'id' },
+  })
+  interesses: Interesses[];
+
+  @ManyToOne(() => Empresa, { eager: true })
   @JoinColumn({ name: 'empresa_id' })
   empresa: Empresa;
-  */
 }
